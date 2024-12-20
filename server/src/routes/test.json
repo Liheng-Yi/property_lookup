@@ -1,0 +1,41 @@
+{
+    "0": {
+        "id": "2825-Nw-Kennedy-Ct,-Portland,-OR-97229",
+        "formattedAddress": "2825 Nw Kennedy Ct, Portland, OR 97229",
+        "addressLine1": "2825 Nw Kennedy Ct",
+        "addressLine2": null,
+        "city": "Portland",
+        "state": "OR",
+        "zipCode": "97229",
+        "county": "Multnomah",
+        "latitude": 45.543871,
+        "longitude": -122.777599,
+        "propertyType": "Condo",
+        "bedrooms": 2,
+        "bathrooms": 2,
+        "squareFootage": 1368,
+        "yearBuilt": 2002,
+        "assessorID": "R524097",
+        "legalDescription": "BROWNSTONE HOMES,A CONDOMINIUM, LOT 52",
+        "subdivision": "BROWNSTONE HOMES",
+        "zoning": "R2",
+        "features": {
+            "exteriorType": "Wood",
+            "fireplace": true,
+            "fireplaceType": "Prefab",
+            "floorCount": 2,
+            "garage": true,
+            "garageType": "Attached",
+            "heating": true,
+            "heatingType": "Forced Air",
+            "unitCount": 1
+        }
+    },
+    "valueEstimate": {
+        "price": 507000,
+        "priceRangeLow": 422000,
+        "priceRangeHigh": 592000,
+        "latitude": 45.543871,
+        "longitude": -122.777599
+    }
+}
