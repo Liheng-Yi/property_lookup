@@ -1,12 +1,33 @@
 import { useState, useRef, useEffect } from 'react';
 import { PropertyService } from '../services/propertyService';
-import { PropertySearchResult } from '../types/property';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
 import './style.css';
 
+interface PropertyInfo {
+  analysis: {
+    overview: string;
+    propertyDetails: {
+      size: number;
+      bedrooms: number;
+      bathrooms: number;
+      estimatedValue: number;
+      yearBuilt: number;
+      propertyType: string;
+      lotSize: number;
+    };
+    nearbySchools: Array<{
+      name: string;
+      type: string;
+      distance: number;
+      rating: number;
+      address: string;
+    }>;
+  };
+}
+
 const AddressAutocomplete = () => {
   const [address, setAddress] = useState('');
-  const [propertyInfo, setPropertyInfo] = useState<PropertySearchResult | null>(null);
+  const [propertyInfo, setPropertyInfo] = useState<PropertyInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
@@ -83,56 +104,56 @@ const AddressAutocomplete = () => {
         </button>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
-      
       {propertyInfo && (
         <div className="results">
           <h2>Property Information</h2>
           
           <div className="section">
             <h3>Overview</h3>
-            <p>{propertyInfo.propertyDetails.overview}</p>
+            <p>{propertyInfo.analysis.overview}</p>
           </div>
 
           <div className="section">
             <h3>Property Details</h3>
             <div className="details-grid">
               <div className="detail-item">
+                <label>Property Type</label>
+                <span>{propertyInfo.analysis.propertyDetails.propertyType || 'Unknown'}</span>
+              </div>
+              <div className="detail-item">
                 <label>Size</label>
-                <span>{propertyInfo.propertyDetails.details.size.toLocaleString()} sq ft</span>
+                <span>{propertyInfo.analysis.propertyDetails.size ? `${propertyInfo.analysis.propertyDetails.size.toLocaleString()} sq ft` : 'Unknown'}</span>
               </div>
               <div className="detail-item">
                 <label>Bedrooms</label>
-                <span>{propertyInfo.propertyDetails.details.bedrooms}</span>
+                <span>{propertyInfo.analysis.propertyDetails.bedrooms ?? 'Unknown'}</span>
               </div>
               <div className="detail-item">
                 <label>Bathrooms</label>
-                <span>{propertyInfo.propertyDetails.details.bathrooms}</span>
+                <span>{propertyInfo.analysis.propertyDetails.bathrooms ?? 'Unknown'}</span>
               </div>
               <div className="detail-item">
                 <label>Estimated Value</label>
-                <span>${propertyInfo.propertyDetails.details.estimatedValue.toLocaleString()}</span>
+                <span>{propertyInfo.analysis.propertyDetails.estimatedValue ? `$${propertyInfo.analysis.propertyDetails.estimatedValue.toLocaleString()}` : 'Unknown'}</span>
               </div>
-              {propertyInfo.propertyDetails.details.yearBuilt && (
-                <div className="detail-item">
-                  <label>Year Built</label>
-                  <span>{propertyInfo.propertyDetails.details.yearBuilt}</span>
-                </div>
-              )}
+              <div className="detail-item">
+                <label>Year Built</label>
+                <span>{propertyInfo.analysis.propertyDetails.yearBuilt ?? 'Unknown'}</span>
+              </div>
             </div>
           </div>
 
           <div className="section">
             <h3>Nearby Schools</h3>
             <div className="schools-grid">
-              {propertyInfo.nearbySchools.map((school, index) => (
+              {propertyInfo.analysis.nearbySchools.map((school, index) => (
                 <div key={index} className="school-item">
-                  <h4>{school.name}</h4>
+                  <h4>{school.name || 'Unknown'}</h4>
                   <div className="school-info">
-                    <p>Distance: {school.distance} miles</p>
-                    <p>Rating: {school.rating}/10</p>
-                    <p>Type: {school.type}</p>
-                    <p>Address: {school.address}</p>
+                    <p>Distance: {school.distance ? `${school.distance} miles` : 'Unknown'}</p>
+                    <p>Rating: {school.rating ? `${school.rating}/10` : 'Unknown'}</p>
+                    <p>Type: {school.type || 'Unknown'}</p>
+                    <p>Address: {school.address || 'Unknown'}</p>
                   </div>
                 </div>
               ))}

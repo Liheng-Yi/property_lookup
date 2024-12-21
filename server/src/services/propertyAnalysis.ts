@@ -10,7 +10,7 @@ interface PropertyData {
 }
 
 export async function analyzePropertyData(propertyData: PropertyData) {
-    const systemPrompt = `Analyze the following property data and nearby schools and return a JSON response with the following structure. Here are two examples of the expected format:
+    const systemPrompt = `Analyze the following property data and nearby schools and return a JSON response with the following structure. Mention the school name in the overview if the school is great. Here are two examples of the expected format:
 
 Example 1:
 {

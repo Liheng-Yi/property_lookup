@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { PropertySearchResult } from '../types/property';
+import { PropertyInfo } from '../types/property';
 
 export class PropertyService {
-  private static BASE_URL = 'http://localhost:5000/api';
+  private static BASE_URL = 'http://localhost:5000/api';  // We'll create this API later
 
-  static async getPropertyInfo(address: string): Promise<PropertySearchResult> {
+  static async getPropertyInfo(address: string): Promise<PropertyInfo> {
     try {
       const response = await axios.get(`${this.BASE_URL}/property`, {
         params: { address }

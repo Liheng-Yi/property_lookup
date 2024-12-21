@@ -42,7 +42,9 @@ export async function getNearbySchools(location: Location): Promise<School[]> {
         .filter(school => school.type !== null);
 
       console.log('Processed schools:', schools);
-      return schools.sort((a, b) => a.distance - b.distance);
+      return schools
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 5); // Only return top 5 schools
     }
 
     return [];

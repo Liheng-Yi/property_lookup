@@ -19,49 +19,51 @@ router.get('/', async (req, res) => {
 
     try {
         // Fetch property details
-        // const propertyResponse = await fetch(
-        //     `https://api.rentcast.io/v1/properties?address=${encodeURIComponent(address as string)}`,
-        //     {
-        //         headers: {
-        //             'Accept': 'application/json',
-        //             'X-Api-Key': process.env.RENTCAST_API_KEY || ''
-        //         }
-        //     }
-        // );
+        const propertyResponse = await fetch(
+            `https://api.rentcast.io/v1/properties?address=${encodeURIComponent(address as string)}`,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Api-Key': process.env.RENTCAST_API_KEY || ''
+                }
+            }
+        );
 
-        // // Fetch property value estimate
-        // const valueResponse = await fetch(
-        //     `https://api.rentcast.io/v1/avm/value?address=${encodeURIComponent(address as string)}`,
-        //     {
-        //         headers: {
-        //             'Accept': 'application/json',
-        //             'X-Api-Key': process.env.RENTCAST_API_KEY || ''
-        //         }
-        //     }
-        // );
+        // Fetch property value estimate
+        const valueResponse = await fetch(
+            `https://api.rentcast.io/v1/avm/value?address=${encodeURIComponent(address as string)}`,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Api-Key': process.env.RENTCAST_API_KEY || ''
+                }
+            }
+        );
 
-        // if (!propertyResponse.ok || !valueResponse.ok) {
-        //     throw new Error(`API request failed with status ${propertyResponse.status} or ${valueResponse.status}`);
-        // }
+        if (!propertyResponse.ok || !valueResponse.ok) {
+            throw new Error(`API request failed with status ${propertyResponse.status} or ${valueResponse.status}`);
+        }
 
-        // const propertyData: RentcastPropertyResponse = await propertyResponse.json();
-        // const valueData = await valueResponse.json();
+        const propertyData: RentcastPropertyResponse = await propertyResponse.json();
+        const valueData = await valueResponse.json();
 
-        // // Remove comparables from valueData
-        // const { comparables, ...valueDataWithoutComparables } = valueData;
+        const { comparables, ...valueDataWithoutComparables } = valueData;
 
-        const testDataPath = path.join(__dirname, '/test.json');
-        const testData = JSON.parse(await fs.readFile(testDataPath, 'utf-8'));
+        // Combine the property and value data
+        const combinedData = {
+            ...propertyData,
+            ...valueDataWithoutComparables
+        };
 
         const nearbySchools = await getNearbySchools({
-        latitude: testData[0].latitude,
-        longitude: testData[0].longitude
+            latitude: combinedData.latitude,
+            longitude: combinedData.longitude
         });
-        console.log(nearbySchools);
+
         // Analyze the property data using OpenAI
         const analysisResult = await analyzePropertyData({
-            combinedData: testData,
-            nearbySchools: nearbySchools
+            combinedData,
+            nearbySchools
         });
 
         // Combine all the data and send the response

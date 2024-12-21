@@ -1,24 +1,21 @@
-export interface PropertyDetails {
-  overview: string;
-  details: {
-    size: number;
-    bedrooms: number;
-    bathrooms: number;
-    estimatedValue: number;
-    yearBuilt?: number;
+export interface PropertyInfo {
+  analysis: {
+    overview: string;
+    propertyDetails: {
+      size: number;
+      bedrooms: number;
+      bathrooms: number;
+      estimatedValue: number;
+      yearBuilt: number;
+      propertyType: string;
+      lotSize: number;
+    };
+    nearbySchools: Array<{
+      name: string;
+      type: string;
+      distance: number;
+      rating: number;
+      address: string;
+    }>;
   };
-}
-
-export interface School {
-  name: string;
-  distance: number;
-  rating: number;
-  type: 'Elementary' | 'Middle' | 'High';
-  address: string;
-}
-
-export interface PropertySearchResult {
-  address: string;
-  propertyDetails: PropertyDetails;
-  nearbySchools: School[];
 } 
